@@ -8,22 +8,21 @@ import indexRoute from "./routes/index.js";
 const app = express();
 app.use(cors());
 
+// mongoose
+//     .connect("mongodb://localhost/tableTest", {
+//         useNewUrlParser: true,
+//     })
+//     .then(() => console.log("MongoDB Connected"))
+//     .catch((err) => console.log(err));
+
 mongoose
-    .connect("mongodb://localhost/tableTest", {
-        useNewUrlParser: true,
-    })
+    .connect(
+        "mongodb+srv://abhishek:lDoS5BaMxCGDhR0A@cluster0.tnyk7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority/tableTest", {
+            useNewUrlParser: true,
+        }
+    )
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => console.log(err));
-
-// mongoose
-//   .connect(
-//     "mongodb+srv://abhishek:lDoS5BaMxCGDhR0A@cluster0.tnyk7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority/tableTest",
-//     {
-//       useNewUrlParser: true,
-//     }
-//   )
-//   .then(() => console.log("MongoDB Connected"))
-//   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
     res.send("server is started...");
