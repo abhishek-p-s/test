@@ -12,49 +12,75 @@ var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 indexRoute.get(
-    "/list",
-    expressAsyncHandler(async(req, res) => {
-        const product = await Item.find({});
-        res.send(product);
-    })
+  "/list",
+  expressAsyncHandler(async (req, res) => {
+    const product = await Item.find({});
+    res.send(product);
+  })
 );
 
 indexRoute.get(
-    "/seed",
-    expressAsyncHandler(async(req, res) => {
-        const createdProduct = await Item.insertMany(data.products);
-        res.send({ createdProduct });
-    })
+  "/seed",
+  expressAsyncHandler(async (req, res) => {
+    const createdProduct = await Item.insertMany(data.products);
+    res.send({ createdProduct });
+  })
 );
 
 indexRoute.get(
-    "/list/:id",
-    expressAsyncHandler(async(req, res) => {
-        const product = await Item.findById(req.params.id);
-        if (product) {
-            res.send(product);
-        } else {
-            res.status(404).send({ message: "Item Not Found" });
-        }
-        // console.log("inside api ");
-    })
+  "/list/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await Item.findById(req.params.id);
+    if (product) {
+      res.send(product);
+    } else {
+      res.status(404).send({ message: "Item Not Found" });
+    }
+    // console.log("inside api ");
+  })
 );
 
 indexRoute.put(
-    "/list/update/:id",
-    jsonParser,
-    expressAsyncHandler(async(req, res) => {
-        const product = await Item.findById(req.params.id);
-        if (product) {
-            console.log(req.body);
-            (product.name = req.body.name), (product.email = req.body.email);
-            const itemUpdate = await product.save();
-            res.send({ message: "Item Updated", item: itemUpdate });
-        } else {
-            res.status(404).send({ message: "Item Not Found" });
-        }
-        //console.log("inside api ");
-    })
+  "/list/update/:id",
+  jsonParser,
+  expressAsyncHandler(async (req, res) => {
+    const product = await Item.findById(req.params.id);
+    if (product) {
+      console.log(req.body);
+      (product.name = req.body.name), (product.email = req.body.email);
+      const itemUpdate = await product.save();
+      res.send({ message: "Item Updated", item: itemUpdate });
+    } else {
+      res.status(404).send({ message: "Item Not Found" });
+    }
+    //console.log("inside api ");
+  })
+);
+
+indexRoute.post(
+  "/list/add",
+  jsonParser,
+  expressAsyncHandler(async (req, res) => {
+    const newData = new Item({ name: req.body.name, email: req.body.email });
+    const itemData = await newData.save();
+
+    res.send({ message: "Item added successfully", item: itemData });
+
+    //console.log("inside api ");
+  })
+);
+
+indexRoute.delete(
+  "/list/delete/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await Item.deleteOne(req.params.id);
+    if (product) {
+      res.status(200).send({ message: "Item deleted successfully" });
+    } else {
+      res.status(404).send({ message: "Item Not Found" });
+    }
+    // console.log("inside api ");
+  })
 );
 
 export default indexRoute;

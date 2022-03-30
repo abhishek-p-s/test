@@ -8,10 +8,11 @@ import moment from "moment";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../actions/productAction";
+import { listProducts,itemDelete } from "../actions/productAction";
 import LoadingBox from "./LoadingBox";
 
 function Home() {
+
   const dispatch = useDispatch();
 
   const list = useSelector((state) => state.itemList);
@@ -71,8 +72,16 @@ function Home() {
         return (
           <div className="text-center">
             <Link to={`/item/${row._id}`} className="btn btn-outline-secondary">
-              View
+              Edit
             </Link>
+            <button
+              onClick={() => {
+                dispatch(itemDelete(row._id));
+              }}
+              className="mx-3 btn btn-outline-danger"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -88,7 +97,16 @@ function Home() {
           {loading ? (
             <LoadingBox />
           ) : (
-            <Card>
+            <div>
+              <div>
+                <Link
+                  style={{ float: "right" }}
+                  className="btn btn-success mb-3"
+                  to={`/item`}
+                >
+                  <i class="fa fa-plus" aria-hidden="true"></i> Create New
+                </Link>
+              </div>
               <BootstrapTable
                 keyField="id"
                 data={itemList}
@@ -97,7 +115,7 @@ function Home() {
                 filter={filterFactory()}
                 pagination={paginationFactory()}
               />
-            </Card>
+            </div>
           )}
         </div>
       </div>

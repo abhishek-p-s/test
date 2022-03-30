@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { itemDetails, itemUpdate } from "../actions/productAction";
+import { itemAdd, itemDetails, itemUpdate } from "../actions/productAction";
 
 function ItemScreen() {
   const { id } = useParams();
@@ -25,7 +25,9 @@ function ItemScreen() {
   }, [listDetails]);
 
   React.useEffect(() => {
-    dispatch(itemDetails(id));
+    if (id) {
+      dispatch(itemDetails(id));
+    }
   }, [dispatch, id]);
 
   const handleSubmit = (e) => {
@@ -33,10 +35,14 @@ function ItemScreen() {
     var data = {
       name: name,
       email: email,
-      id: id,
+      id: id ? id : 0,
     };
-    console.log("inside function");
-    dispatch(itemUpdate(data));
+    //console.log("inside function");
+    if (id) {
+      dispatch(itemUpdate(data));
+    } else {
+      dispatch(itemAdd(data));
+    }
     navigate("/");
   };
 
@@ -46,9 +52,15 @@ function ItemScreen() {
         <div className="col-md-12">
           <form onSubmit={handleSubmit}>
             <div class="form-group mt-3">
-              <label for="exampleInputEmail1">Email address</label>
+              <label
+                for="exampleInputEmail1 "
+                className="col-form-label control-label"
+              >
+                Email address <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type="email"
+                autoFocus
                 class="form-control"
                 value={email}
                 id="exampleInputEmail1"
@@ -57,10 +69,13 @@ function ItemScreen() {
                 onChange={(e) => {
                   setemail(e.target.value);
                 }}
+                required
               />
             </div>
             <div class="form-group mt-3">
-              <label for="exampleInputPassword1">Name</label>
+              <label for="exampleInputPassword1">
+                Name <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -70,6 +85,7 @@ function ItemScreen() {
                 onChange={(e) => {
                   setname(e.target.value);
                 }}
+                required
               />
             </div>
 

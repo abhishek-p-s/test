@@ -1,3 +1,7 @@
 #root {
-    font-family: 'FontAwesome';
+  font-family: "FontAwesome";
+}
+.form-group.required .control-label:after {
+  content: "*";
+  color: red;
 }
