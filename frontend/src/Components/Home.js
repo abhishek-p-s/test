@@ -8,11 +8,10 @@ import moment from "moment";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts,itemDelete } from "../actions/productAction";
+import { listProducts, itemDelete } from "../actions/productAction";
 import LoadingBox from "./LoadingBox";
 
 function Home() {
-
   const dispatch = useDispatch();
 
   const list = useSelector((state) => state.itemList);
@@ -75,7 +74,8 @@ function Home() {
               Edit
             </Link>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 dispatch(itemDelete(row._id));
               }}
               className="mx-3 btn btn-outline-danger"
