@@ -7,13 +7,14 @@ import ToolkitProvider, {
   CSVExport,
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
-import { Card } from "react-bootstrap";
 import moment from "moment";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts, itemDelete } from "../actions/productAction";
 import LoadingBox from "./LoadingBox";
+import Navbar from "./Navbar";
+import ItemScreen from "./ItemScreen";
 
 const { ExportCSVButton } = CSVExport;
 
@@ -107,54 +108,57 @@ function Home() {
   const noData = <div className="text-muted py-3 text-center"> No Data..</div>;
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-12 p-5">
-          {loading ? (
-            <LoadingBox />
-          ) : (
-            <div>
+    <>
+      <Navbar />
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12 p-5">
+            {loading ? (
+              <LoadingBox />
+            ) : (
               <div>
-                <Link className="btn btn-success mb-3" to={`/item`}>
-                  <i class="fa fa-plus" aria-hidden="true"></i> Create New
-                </Link>
+                <div>
+                  <Link className="btn btn-success mb-3" to={`/item`}>
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                  </Link>
+                </div>
+
+                <ToolkitProvider
+                  keyField="id"
+                  data={itemList}
+                  columns={columns}
+                  exportCSV={{
+                    fileName: "workDetails.csv",
+                  }}
+                >
+                  {(props) => (
+                    <div>
+                      <ExportCSVButton
+                        style={{ float: "right" }}
+                        className="btn btn-secondary mb-3"
+                        {...props.csvProps}
+                      >
+                        Export
+                      </ExportCSVButton>
+
+                      <BootstrapTable
+                        {...props.baseProps}
+                        keyField="id"
+                        data={itemList}
+                        columns={columns}
+                        noDataIndication={noData}
+                        filter={filterFactory()}
+                        pagination={paginationFactory()}
+                      />
+                    </div>
+                  )}
+                </ToolkitProvider>
               </div>
-
-              <ToolkitProvider
-                keyField="id"
-                data={itemList}
-                columns={columns}
-                exportCSV={{
-                  fileName: "workDetails.csv",
-                }}
-              >
-                {(props) => (
-                  <div>
-                    <ExportCSVButton
-                      style={{ float: "right" }}
-                      className="btn btn-secondary mb-3"
-                      {...props.csvProps}
-                    >
-                      Export
-                    </ExportCSVButton>
-
-                    <BootstrapTable
-                      {...props.baseProps}
-                      keyField="id"
-                      data={itemList}
-                      columns={columns}
-                      noDataIndication={noData}
-                      filter={filterFactory()}
-                      pagination={paginationFactory()}
-                    />
-                  </div>
-                )}
-              </ToolkitProvider>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

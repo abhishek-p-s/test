@@ -1,12 +1,25 @@
 import React from "react";
+import axios from "axios";
+import { userAction } from "../actions/userAction";
+import { useDispatch } from "react-redux";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 function Login() {
-    
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
   const [email, setemail] = React.useState("");
   const [password, setpassword] = React.useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = {
+      email: email,
+      password: password,
+      isAdmin: false,
+    };
+    dispatch(userAction(data));
+    navigate("/");
   };
 
   return (

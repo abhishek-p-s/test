@@ -1,17 +1,51 @@
 #root {
-    font-family: "FontAwesome";
+  font-family: "FontAwesome";
 }
 
 .form-group.required .control-label:after {
-    content: "*";
-    color: red;
+  content: "*";
+  color: red;
 }
 
 .login-section {
-    width: 45%;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid blue;
-    border-radius: 5px;
-    margin-top: 10%;
+  width: 45%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid blue;
+  border-radius: 5px;
+  margin-top: 10%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #41b98c;
+  padding: 0.5rem;
+  align-items: center;
+}
+a {
+  text-decoration: none;
+}
+
+.logout {
+  margin-right: 2rem;
+}
+
+.logout a {
+  text-decoration: none;
+  color: #fefefe;
+}
+
+.brand {
+  margin-left: 3rem;
+}
+.brand a {
+  text-decoration: none;
+  color: #fefefe;
+}
+
+.item-border {
+  border: 1px solid blue;
+  border-radius: 5px;
+  margin-top: 5rem;
 }
