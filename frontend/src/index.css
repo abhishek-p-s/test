@@ -1,7 +1,17 @@
 #root {
-  font-family: "FontAwesome";
+    font-family: "FontAwesome";
 }
+
 .form-group.required .control-label:after {
-  content: "*";
-  color: red;
+    content: "*";
+    color: red;
+}
+
+.login-section {
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid blue;
+    border-radius: 5px;
+    margin-top: 10%;
 }

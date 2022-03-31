@@ -2,25 +2,32 @@ import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { itemAdd, itemDetails, itemUpdate } from "../actions/productAction";
+import moment from "moment";
 
 function ItemScreen() {
   const { id } = useParams();
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const [email, setemail] = useState("");
+  const [date, setdate] = useState(moment(new Date()).format("DD/MM/YYYY"));
   const [name, setname] = useState("");
+  const [fromTime, setfromTime] = useState("");
+  const [toTime, settoTime] = useState("");
+  const [projectName, setprojectName] = useState("");
 
   const listDetails = useSelector((state) => state.itemDetails);
 
   // console.log(listDetails);
 
+  console.log(moment(new Date()).format("DD/MM/YYYY"), "moment()");
+
   React.useEffect(() => {
     console.log("hai");
     if (listDetails.item) {
-      setemail(listDetails.item.email);
+      setdate(listDetails.item.date);
       setname(listDetails.item.name);
+      setprojectName(listDetails.item.projectName);
     } else {
-      setemail("");
+      setdate("");
     }
   }, [listDetails]);
 
@@ -32,12 +39,26 @@ function ItemScreen() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    var startTime = moment(fromTime, "hh:mm");
+    var endTime = moment(toTime, "hh:mm");
+    var mins = moment
+      .utc(moment(endTime, "HH:mm:ss").diff(moment(startTime, "HH:mm:ss")))
+      .format("mm");
+
+    // console.log(
+    //   "time diff",
+    //   endTime.diff(startTime, "hours") + " Hrs and " + mins + " Mns"
+    // );
+
     var data = {
       name: name,
-      email: email,
+      date: date,
+      projectName: projectName,
+      hour: endTime.diff(startTime, "hours") + " Hrs and " + mins + " Mns",
       id: id ? id : 0,
     };
-    //console.log("inside function");
+    // console.log("inside function");
     if (id) {
       dispatch(itemUpdate(data));
     } else {
@@ -51,42 +72,88 @@ function ItemScreen() {
       <div className="row p-5">
         <div className="col-md-12">
           <form onSubmit={handleSubmit}>
-            <div class="form-group mt-3">
-              <label
-                for="exampleInputEmail1 "
-                className="col-form-label control-label"
-              >
-                Email address <span style={{ color: "red" }}>*</span>
-              </label>
-              <input
-                type="email"
-                autoFocus
-                class="form-control"
-                value={email}
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-                onChange={(e) => {
-                  setemail(e.target.value);
-                }}
-                required
-              />
-            </div>
-            <div class="form-group mt-3">
-              <label for="exampleInputPassword1">
-                Name <span style={{ color: "red" }}>*</span>
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputPassword1"
-                placeholder="name"
-                value={name}
-                onChange={(e) => {
-                  setname(e.target.value);
-                }}
-                required
-              />
+            <div className="row">
+              <div className="col-md-6 mt-3">
+                <div class="form-group mt-3">
+                  <label for="exampleInputPassword1">
+                    Name <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="name"
+                    autoFocus
+                    value={name}
+                    onChange={(e) => {
+                      setname(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div class="form-group mt-3">
+                  <label
+                    for="exampleInputEmail1 "
+                    className="col-form-label control-label"
+                  >
+                    Date <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    value={date}
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    onChange={(e) => {
+                      setdate(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="col-md-6 mt-2">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">
+                    project <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="name"
+                    value={projectName}
+                    onChange={(e) => {
+                      setprojectName(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="col-md-3 mt-2">
+                <label for="fromtime">From</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  onChange={(e) => {
+                    setfromTime(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="col-md-3 mt-2">
+                <label for="fromtime">To</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  onChange={(e) => {
+                    settoTime(e.target.value);
+                  }}
+                />
+              </div>
             </div>
 
             <div className="">

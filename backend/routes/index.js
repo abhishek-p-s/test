@@ -47,7 +47,7 @@ indexRoute.put(
         const product = await Item.findById(req.params.id);
         if (product) {
             console.log(req.body);
-            (product.name = req.body.name), (product.email = req.body.email);
+            (product.name = req.body.name), (product.hour = req.body.hour);
             const itemUpdate = await product.save();
             res.send({ message: "Item Updated", item: itemUpdate });
         } else {
@@ -61,7 +61,12 @@ indexRoute.post(
     "/list/add",
     jsonParser,
     expressAsyncHandler(async(req, res) => {
-        const newData = new Item({ name: req.body.name, email: req.body.email });
+        const newData = new Item({
+            name: req.body.name,
+            hour: req.body.hour,
+            date: req.body.date,
+            projectName: req.body.projectName,
+        });
         const itemData = await newData.save();
 
         res.send({ itemData });

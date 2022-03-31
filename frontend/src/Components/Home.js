@@ -2,7 +2,11 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
-//import ToolkitProvider from "react-bootstrap-table2-toolkit";
+//import ToolkitProvider, { CSVExport,Search } from "react-bootstrap-table2-toolkit";
+import ToolkitProvider, {
+  CSVExport,
+  Search,
+} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit";
 import { Card } from "react-bootstrap";
 import moment from "moment";
 import { useParams, useNavigate, Link } from "react-router-dom";
@@ -10,6 +14,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts, itemDelete } from "../actions/productAction";
 import LoadingBox from "./LoadingBox";
+
+const { ExportCSVButton } = CSVExport;
 
 function Home() {
   const dispatch = useDispatch();
@@ -33,36 +39,46 @@ function Home() {
     //   headerAlign: "center",
     // },
     {
-      dataField: "name",
-      text: "Name",
+      dataField: "projectName",
+      text: "Project Name",
       filter: textFilter(),
       sort: true,
       headerAlign: "center",
     },
     {
-      dataField: "email",
-      text: "Email",
+      dataField: "hour",
+      text: "Hour",
       filter: textFilter({}),
       sort: true,
       headerAlign: "center",
     },
-    {
-      dataField: "createdAt",
-      text: "Created At",
-      formatter: (cell, row, rowIndex) => {
-        return <p>{moment(row.createdAt).format("MM/DD/YYYY h:mm:ss")}</p>;
-      },
 
-      headerAlign: "center",
-    },
     {
-      dataField: "updatedAt",
-      text: "Updated At",
+      dataField: "date",
+      text: "Date",
+      filter: textFilter({}),
       formatter: (cell, row, rowIndex) => {
-        return <p>{moment(row.updatedAt).format("MM/DD/YYYY h:mm:ss")}</p>;
+        return <p>{moment(row.date).format("MMM Do YYYY")}</p>;
       },
-      headerAlign: "center",
     },
+
+    // {
+    //   dataField: "createdAt",
+    //   text: "Created At",
+    //   formatter: (cell, row, rowIndex) => {
+    //     return <p>{moment(row.createdAt).format("MM/DD/YYYY h:mm:ss")}</p>;
+    //   },
+
+    //   headerAlign: "center",
+    // },
+    // {
+    //   dataField: "updatedAt",
+    //   text: "Updated At",
+    //   formatter: (cell, row, rowIndex) => {
+    //     return <p>{moment(row.updatedAt).format("MM/DD/YYYY h:mm:ss")}</p>;
+    //   },
+    //   headerAlign: "center",
+    // },
     {
       dataField: "#",
       text: "Action",
@@ -99,22 +115,41 @@ function Home() {
           ) : (
             <div>
               <div>
-                <Link
-                  style={{ float: "right" }}
-                  className="btn btn-success mb-3"
-                  to={`/item`}
-                >
+                <Link className="btn btn-success mb-3" to={`/item`}>
                   <i class="fa fa-plus" aria-hidden="true"></i> Create New
                 </Link>
               </div>
-              <BootstrapTable
+
+              <ToolkitProvider
                 keyField="id"
                 data={itemList}
                 columns={columns}
-                noDataIndication={noData}
-                filter={filterFactory()}
-                pagination={paginationFactory()}
-              />
+                exportCSV={{
+                  fileName: "workDetails.csv",
+                }}
+              >
+                {(props) => (
+                  <div>
+                    <ExportCSVButton
+                      style={{ float: "right" }}
+                      className="btn btn-secondary mb-3"
+                      {...props.csvProps}
+                    >
+                      Export
+                    </ExportCSVButton>
+
+                    <BootstrapTable
+                      {...props.baseProps}
+                      keyField="id"
+                      data={itemList}
+                      columns={columns}
+                      noDataIndication={noData}
+                      filter={filterFactory()}
+                      pagination={paginationFactory()}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
             </div>
           )}
         </div>
