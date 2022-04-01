@@ -87,18 +87,18 @@ function Home() {
       formatter: (cell, row, rowIndex) => {
         return (
           <div className="text-center">
-            <Link to={`/item/${row._id}`} className="btn btn-outline-secondary">
-              Edit
+            <Link to={`/item/${row._id}`} style={{ textDecoration: "none" }}>
+              <i class="fas fa-edit"></i>
             </Link>
-            <button
+
+            <i
+              class="fa fa-trash mx-3 text-danger"
               onClick={(e) => {
                 e.preventDefault();
                 dispatch(itemDelete(row._id));
               }}
-              className="mx-3 btn btn-outline-danger"
-            >
-              Delete
-            </button>
+              aria-hidden="true"
+            ></i>
           </div>
         );
       },
@@ -111,17 +111,18 @@ function Home() {
     <>
       <Navbar />
       <div className="container">
+        <ItemScreen />
         <div className="row">
           <div className="col-md-12 p-5">
             {loading ? (
               <LoadingBox />
             ) : (
               <div>
-                <div>
+                {/* <div>
                   <Link className="btn btn-success mb-3" to={`/item`}>
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                   </Link>
-                </div>
+                </div> */}
 
                 <ToolkitProvider
                   keyField="id"

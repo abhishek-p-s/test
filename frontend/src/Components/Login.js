@@ -76,6 +76,9 @@ function Login() {
                 </button>
               </div>
             </form>
+            <div className="register">
+              <Link to="/register">New user?</Link>
+            </div>
           </div>
         </div>
       </div>

@@ -4,17 +4,15 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import ItemScreen from "../Components/ItemScreen";
 import Login from "../Components/Login";
+import Register from "../Components/Register";
 
 function Router() {
-  const logoutHandle = (e) => {
-    localStorage.removeItem("userInfo");
-  };
-
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/item/:id"
             element={<PrivateRoute component={ItemScreen} />}

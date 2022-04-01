@@ -49,3 +49,12 @@ a {
   border-radius: 5px;
   margin-top: 5rem;
 }
+.register a {
+  text-decoration: "none";
+}
+
+@media only screen and (max-width: 700px) {
+  .login-section {
+    width: 100%;
+  }
+}

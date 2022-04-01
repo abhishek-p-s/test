@@ -67,12 +67,12 @@ function ItemScreen() {
     } else {
       dispatch(itemAdd(data));
     }
-    navigate("/");
+    //navigate("/");
   };
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container">
         <div className="row p-5 item-border mt-5">
           <div className="col-md-12">
@@ -165,7 +165,7 @@ function ItemScreen() {
 
               <div className="">
                 <button type="submit" class="btn btn-success mt-3 ">
-                  Submit
+                  Add
                 </button>
                 <Link class="btn btn-danger mt-3 mx-4 " to="/">
                   Cancel
