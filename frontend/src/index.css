@@ -29,11 +29,15 @@ a {
 
 .logout {
   margin-right: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logout a {
   text-decoration: none;
   color: #fefefe;
+  cursor: pointer;
 }
 
 .brand {

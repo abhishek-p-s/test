@@ -21,12 +21,14 @@ function Navbar() {
         </Link>
       </div>
       <div className="logout">
-        <button
-          onClick={logoutHandle}
-          className="btn btn-outline-info text-white"
-        >
-          {localStorage.getItem("userInfo") ? " Logout" : "Login"}
-        </button>
+        <div>
+          <Link to="/task">Task</Link>
+        </div>
+        <div>
+          <a onClick={logoutHandle} className="mx-4 text-white">
+            {localStorage.getItem("userInfo") ? " Logout" : "Login"}
+          </a>
+        </div>
       </div>
     </header>
   );

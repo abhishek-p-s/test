@@ -15,6 +15,7 @@ import { listProducts, itemDelete } from "../actions/productAction";
 import LoadingBox from "./LoadingBox";
 import Navbar from "./Navbar";
 import ItemScreen from "./ItemScreen";
+import swal from "sweetalert";
 
 const { ExportCSVButton } = CSVExport;
 
@@ -22,15 +23,27 @@ function Home() {
   const dispatch = useDispatch();
 
   const list = useSelector((state) => state.itemList);
+  const user = useSelector((state) => state.userSignin);
 
   const { loading, itemList } = list;
 
-  console.log("table data", itemList);
+  console.log("user data", user);
 
   // const { loading, error, items } = itemList;
 
   React.useEffect(() => {
     dispatch(listProducts());
+    if (user.user.isAdmin == true) {
+      console.log("column pushing");
+      columns.push({
+        dataField: "name",
+        text: "Name",
+        filter: textFilter(),
+        sort: true,
+        headerAlign: "center",
+      });
+    }
+    console.log("colum", columns);
   }, []);
 
   const columns = [
@@ -39,6 +52,14 @@ function Home() {
     //   text: "#",
     //   headerAlign: "center",
     // },
+    {
+      dataField: "name",
+      text: "Name",
+      filter: textFilter(),
+      hidden: user.user.isAdmin === true ? false : true,
+      headerAlign: "center",
+    },
+
     {
       dataField: "projectName",
       text: "Project Name",
@@ -95,7 +116,22 @@ function Home() {
               class="fa fa-trash mx-3 text-danger"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(itemDelete(row._id));
+                swal({
+                  title: "Are you sure?",
+                  text: "Once deleted, you will not be able to recover this imaginary file!",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                }).then((willDelete) => {
+                  if (willDelete) {
+                    dispatch(itemDelete(row._id));
+                    swal("Poof! Your imaginary file has been deleted!", {
+                      icon: "success",
+                    });
+                  } else {
+                    swal("Your imaginary file is safe!");
+                  }
+                });
               }}
               aria-hidden="true"
             ></i>
@@ -111,7 +147,8 @@ function Home() {
     <>
       <Navbar />
       <div className="container">
-        <ItemScreen />
+        {user ? user.user.isAdmin == true ? "" : <ItemScreen /> : ""}
+
         <div className="row">
           <div className="col-md-12 p-5">
             {loading ? (

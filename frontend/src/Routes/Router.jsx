@@ -5,6 +5,7 @@ import PrivateRoute from "./PrivateRoute";
 import ItemScreen from "../Components/ItemScreen";
 import Login from "../Components/Login";
 import Register from "../Components/Register";
+import Task from "../Components/Task";
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/task" element={<PrivateRoute component={Task} />} />
           <Route
             path="/item/:id"
             element={<PrivateRoute component={ItemScreen} />}

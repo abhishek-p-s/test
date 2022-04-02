@@ -16,7 +16,11 @@ indexRoute.get(
   "/list",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const product = await Item.find({ user: req.user._id });
+    if (req.user.isAdmin === true) {
+      var product = await Item.find({});
+    } else {
+      var product = await Item.find({ user: req.user._id });
+    }
     console.log("user data", product);
     console.log("user id", req.user._id);
     res.send(product);
